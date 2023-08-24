@@ -1,13 +1,7 @@
-import pdfquery
+from PyPDF2 import PdfReader
 
-FILE = "coord_sheets_pg1.pdf"
-OUTPUT_XML = "output.xml"
 
-pdf = pdfquery.PDFQuery(FILE)
-print(f"Loading {FILE}...")
-pdf.load()
-print(f"Finished loading {FILE}")
-
-pdf.tree.write(OUTPUT_XML, pretty_print=True)
-
-print(pdf.pq("LTFigure"))
+reader = PdfReader("coord_sheets_pg1.pdf")
+page = reader.pages[0]
+with open("text_output.txt", "w") as file:
+  file.write(page.extract_text())
