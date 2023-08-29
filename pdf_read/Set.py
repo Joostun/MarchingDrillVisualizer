@@ -1,13 +1,19 @@
+import re
+
+from Coordinate import Coordinate
 
 class Set:
 
     def __init__(self, raw):
-        self.process(raw)
         self.raw = raw
 
         self.number = None
         self.counts = None
         self.coordinate = None
+        self.process(raw)
     
     def process(self, raw):
-        print("processing a line WIP")
+        self.number = raw.split()[0]
+        self.counts = re.search("\d+(?=Side)")[0].strip()
+
+        self.coordinate = Coordinate()

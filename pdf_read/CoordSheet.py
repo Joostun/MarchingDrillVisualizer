@@ -1,16 +1,18 @@
 import re
 
+from Set import Set
+
 class CoordSheet:
 
     def __init__(self, raw):
-        self.process(raw)
-
         self.raw = raw
 
         self.sets = []
 
         self.symbol = None
         self.number = None
+
+        self.process(raw)
     
     def process(self, raw):
         raw = raw.strip()
