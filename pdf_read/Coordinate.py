@@ -15,6 +15,9 @@ class Coordinate:
         self.process(raw)
     
     def process(self, raw):
-
+        
         side = 1 if re.search("(?<=Side )\d")[0].strip() == "2" else -1
+
+        re.search("(?<-:).+ln"),raw
+        
         
