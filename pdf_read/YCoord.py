@@ -1,10 +1,8 @@
 import re
-sample_text1 = 'Side 1: 1.5 steps outside 40 yd ln 6.75 steps behind Front side line'
-sample_text2 = '16Side 1: 1.0 steps inside 40 yd ln 9.75 steps in front of Front Hash (HS)'
 
 def StepsSearch(fstring):
     step_adjust = re.findall(r'(?<=ln\s).+(?= steps)',fstring)
-    yard_adjust = .625 * float(step_adjust)
+    yard_adjust = .625 * float(step_adjust[0])
     return yard_adjust
 
 class YCoord:

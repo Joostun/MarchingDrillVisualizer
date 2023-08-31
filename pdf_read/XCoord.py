@@ -18,7 +18,7 @@ class XCoord:
         if 'inside' in fstring:
             from_fifty = translated_yard_line - step_adjust
         elif 'outside' in fstring:
-            from_fifty = translated_yard_line - step_adjust
+            from_fifty = translated_yard_line + step_adjust
         else:
             from_fifty = translated_yard_line
 
