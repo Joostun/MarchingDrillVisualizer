@@ -1,4 +1,6 @@
 import re
+from XCoord import XCoord
+from YCoord import YCoord
 
 class Coordinate:
 
@@ -8,9 +10,11 @@ class Coordinate:
         # Coordinates measured in Steps
         # X -> Steps from 50 yd line (Side 2 is [+] and Side 1 is [-])
         # Y -> Steps behind the front sideline
+        XCoordClass = XCoord(raw)
+        YCoordClass = YCoord(raw)
 
-        self.x = None
-        self.y = None
+        self.x = XCoordClass.x_coordinate
+        self.y = YCoordClass.y_coordinate
 
         self.process(raw)
     
