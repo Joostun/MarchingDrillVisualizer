@@ -24,3 +24,6 @@ split_list = re_value[0].split("ln")
 
        
 print(XCoord("1    0Side 2: On 45 yd ln 8.0 steps behind Front side line"))
+print(XCoord('24Side 1: 2.0 steps inside 35 yd ln 12.0 steps in front of Front Hash (HS)'))
+print(XCoord('18   32Side 2: 0.25 steps outside 50 yd ln 10.25 steps in front of Front Hash (HS)'))
+print
