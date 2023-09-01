@@ -20,7 +20,3 @@ class Coordinate:
         raw.split("ln")
         self.x = XCoordClass.x_coordinate
         self.y = YCoordClass.y_coordinate
-        
-x = Coordinate("11   20Side 1: 3.5 steps outside 45 yd ln 10.25 steps behind Front side line")
-print(x.x)
-print(x.y)
