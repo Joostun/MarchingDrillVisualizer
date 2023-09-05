@@ -2,6 +2,7 @@ import re
 
 from CoordSheet import CoordSheet
 
+dotbook = []
 
 with open("text_output.txt") as f:
     raw = f.read()
@@ -11,4 +12,4 @@ with open("text_output.txt") as f:
 sheets = raw.split("Printed:")[:-1]
 
 for sheet in sheets:
-    print(CoordSheet(sheet))
+    dotbook.append(CoordSheet(sheet))
