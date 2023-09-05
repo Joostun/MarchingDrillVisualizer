@@ -1,13 +1,20 @@
 import re
 
-from Set import Set
-
-
 def remove_items(test_list, item):
     res = [i for i in test_list if i != item]
     return res
 
-class CoordSheet:
+def Set():
+    number = raw.split()[0]
+    if "Side" in raw:
+        counts = re.findall("\d+(?=Side)",raw, re.DOTALL)[0].strip()
+    elif "On 50 yd ln" in raw:
+        counts = re.findall("\d+(?=On 50)",raw, re.DOTALL)[0].strip()
+
+    coordinate = Coordinate(raw)
+    
+
+class Marcher:
 
     def __init__(self, raw):
         self.raw = raw
@@ -32,7 +39,3 @@ class CoordSheet:
 
         for instructions in raw_sets:
             self.sets.append(Set(instructions))
-
-        #self.sets = [Set(raw_set) for raw_set in raw_sets]
-        
-
