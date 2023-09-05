@@ -1,21 +1,15 @@
 import re
-import gc
 
 from CoordSheet import CoordSheet
+
+marcher_list=[]
 
 with open("text_output.txt") as f:
     raw = f.read()
 
-
-
 sheets = raw.split("Printed:")[:-1]
 
 for sheet in sheets:
-    indexValue = sheets.index(sheet)
-    id = ids[indexValue]
-    constructor = globals()[id]
-    constructor = CoordSheet(sheet)
-    print(constructor.name)
+    marcher_list.append(CoordSheet(sheet))
 
-
-
+print(marcher_list[0].name)

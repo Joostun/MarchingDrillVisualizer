@@ -12,27 +12,20 @@ class CoordSheet:
     def __init__(self, raw):
         self.raw = raw
 
+        stripped_raw = raw.strip()
         self.sets = []
 
-        self.symbol = None
-        self.number = None
-        self.name = f"{self.symbol}{self.name}"
-        self.process(raw)
 
-    def process(self, raw):
-        raw = raw.strip()
-
-        self.symbol = re.search("(?<=Symbol:).+(?=Label)", raw)[0].strip()
-        self.number = re.search("(?<=Label:).+(?=ID)", raw)[0].strip()
+        self.symbol = re.search("(?<=Symbol:).+(?=Label)", stripped_raw)[0].strip()
+        self.number = re.search("(?<=Label:).+(?=ID)", stripped_raw)[0].strip()
         self.number = "0" if self.number == "(unlabeled)" else self.number
 
-        raw_sets = re.search("(?<=Front-Back).+(?=Performer)", raw, re.DOTALL)[0].splitlines()
-        
-        raw_sets = remove_items(raw_sets, "")
+        raw_sets = re.search("(?<=Front-Back).+(?=Performer)", stripped_raw, re.DOTALL)[0].splitlines()
 
+        raw_sets = remove_items(raw_sets, "")
         for instructions in raw_sets:
             self.sets.append(Set(instructions))
 
-        #self.sets = [Set(raw_set) for raw_set in raw_sets]
+        self.name = f"{self.symbol}{self.number}"
         
 
