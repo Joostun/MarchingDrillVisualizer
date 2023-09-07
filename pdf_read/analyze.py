@@ -12,4 +12,4 @@ sheets = raw.split("Printed:")[:-1]
 for sheet in sheets:
     marcher_list.append(CoordSheet(sheet))
 
-print(marcher_list[0].name)
+print(marcher_list[0].sets[1].coordinate.coords)

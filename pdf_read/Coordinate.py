@@ -20,3 +20,4 @@ class Coordinate:
         raw.split("ln")
         self.x = XCoordClass.x_coordinate
         self.y = YCoordClass.y_coordinate
+        self.coords = f"{self.x}, {self.y}"
