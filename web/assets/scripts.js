@@ -1,11 +1,4 @@
-const object = document.querySelector('.object');
+/*let canvas = document.getElementById(screen);
+let ctx = canvas.getContext('2d');*/
 
-function moveObject() {
-    const newX = Math.random() * (window.innerWidth - 50);
-    const newY = Math.random() * (window.innerHeight - 50);
-
-    object.style.left = `${newX}px`;
-    object.style.top = `${newY}px`;
-}
-
-setInterval(moveObject, 2000); // Move the object every 2 seconds
+console.log(fetch("http://localhost:5000/api/retrieveMarcher/0"))
