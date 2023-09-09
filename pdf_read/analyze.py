@@ -29,3 +29,5 @@ def retrieveMarcher(marcherNumber):
 
 if __name__ == '__main__':
     marcherAPI.run(debug=True)
+
+print(retrieveMarcher(0))
