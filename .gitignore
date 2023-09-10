@@ -4,3 +4,4 @@ pdf_read/output.xml
 pdf_read/text_output.txt
 .idea/
 pdf_read/__pycache__
+pdf_read/marcher_jsons

@@ -1,34 +1,22 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Upload a PDF</title>
+</head>
 <body>
 
-<h1>My First Web Page</h1>
-<p>My First Paragraph</p>
+<h1>Upload a PDF</h1>
 
-<p id="demo"></p>
+<!-- Create a file input element -->
+<input type="file" id="fileInput" accept=".pdf">
 
-<script>
-// Get a reference to the element with id "demo"
-const output = document.getElementById("demo");
+<!-- Add a button to trigger the file upload -->
+<button id="uploadButton">Upload PDF</button>
 
-// Fetch data from the API and handle it
-fetch("http://localhost:5000/api/retrieveMarcher/0")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Use the data here
-        output.innerHTML = `Fetched data: ${JSON.stringify(data)}`;
-    })
-    .catch(error => {
-        // Handle any errors that occurred during the fetch
-        console.error("Fetch error:", error);
-    });
-</script>
+<p id="statusMessage"></p>
 
-<p>lastf</p>
+<!-- Include the external JavaScript file -->
+<script src="script.js"></script>
+
 </body>
 </html>
