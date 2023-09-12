@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from Marcher import Marcher
 from PyPDF2 import PdfReader
 import json
@@ -9,28 +9,38 @@ marcherAPI = Flask(__name__)
 
 @marcherAPI.route('/api/retrieveMarcher', methods=['POST'])
 def retrieveMarcher():
-    if request.method == 'POST':
-        marcher_objects= []
+    if 'pdfFile' not in request.files:
+        return jsonify({'error': 'No PDF file uploaded'}), 400
 
-        raw = request.form.get('key')
-        reader = PdfReader("raw")
-        page = reader.pages[0]
-        rawtext = page.extract_text()
+    pdf_file = request.files['pdfFile']
 
-        sheets = rawtext.split("Printed:")[:-1]
+    if pdf_file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
 
-        for sheet in sheets:
-            marcher_list.append(Marcher(sheet))
-            marcher_index = sheets.index(sheet)
-            marcher_dict = {
-            'name': marcher_list[marcher_index].name,
-            'counts': marcher_list[marcher_index].counts,
-            'x': marcher_list[marcher_index].x,
-            'y': marcher_list[marcher_index].y,
-            }
-            marcher_objects.append(marcher_dict)
+    if pdf_file:
+        try:
+            # Read the uploaded PDF file
+            pdf_reader = PdfReader(pdf_file)
+            page = pdf_reader.pages[0]
+            raw_text = page.extract_text()
 
-    return json.dumps(marcher_objects,indent = 6)
+            sheets = raw_text.split("Printed:")[:-1]
 
+            marcher_objects = []
+
+            for sheet in sheets:
+                marcher_list.append(Marcher(sheet))
+                marcher_index = sheets.index(sheet)
+                marcher_dict = {
+                'name': marcher_list[marcher_index].name,
+                'counts': marcher_list[marcher_index].counts,
+                'x': marcher_list[marcher_index].x,
+                'y': marcher_list[marcher_index].y,
+                }
+                marcher_objects.append(marcher_dict)
+            return json.dumps(marcher_objects,indent = 6)
+        except Exception as e:
+            return jsonify({'error': 'Error processing PDF file'}), 500
+        
 if __name__ == '__main__':
     marcherAPI.run(debug=True)  

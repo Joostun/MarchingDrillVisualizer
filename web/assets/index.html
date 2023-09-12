@@ -1,22 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload a PDF</title>
+    <title>Upload PDF</title>
 </head>
 <body>
 
-<h1>Upload a PDF</h1>
+<h1>Upload PDF</h1>
 
-<!-- Create a file input element -->
-<input type="file" id="fileInput" accept=".pdf">
-
-<!-- Add a button to trigger the file upload -->
+<input type="file" id="pdfInput" accept=".pdf">
 <button id="uploadButton">Upload PDF</button>
 
 <p id="statusMessage"></p>
 
-<!-- Include the external JavaScript file -->
-<script src="script.js"></script>
+<script>
+document.getElementById("uploadButton").addEventListener("click", () => {
+    const pdfInput = document.getElementById("pdfInput");
+    const statusMessage = document.getElementById("statusMessage");
+
+    // Get the selected PDF file
+    const pdfFile = pdfInput.files[0];
+
+    if (!pdfFile) {
+        statusMessage.textContent = "No file selected.";
+        return;
+    }
+
+    // Create a FormData object to send the file
+    const formData = new FormData();
+    formData.append("pdfFile", pdfFile);
+
+    // Send a POST request to your Flask server
+    fetch("http://127.0.0.1:5000/api/retrieveMarcher", {
+        mode: 'no-cors',
+        method: "POST",
+        body: formData,
+    })
+    .then(response => {
+        console.log(response)
+    })
+    .then(data => {
+        // Handle the response data
+        console.log(data);
+        statusMessage.textContent = "good";
+    })
+    .catch(error => {
+        console.error("Fetch error:", error);
+        statusMessage.textContent = `Error: ${error.message}`;
+    });
+});
+</script>
 
 </body>
 </html>
