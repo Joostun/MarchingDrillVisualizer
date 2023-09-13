@@ -1,26 +1,34 @@
-const input = document.querySelector("input");
-const preview = document.querySelector(".preview");
+const marcher_list = [];
 
-input.style.opacity = 0;
+document.getElementById("uploadButton").addEventListener("click", () => {
+  const pdfInput = document.getElementById("pdfInput");
+  const statusMessage = document.getElementById("statusMessage");
 
-function fetchFromAPI() {
-    const curFiles = input.files;
-    if (curFiles.length === 0) {
-      const para = document.createElement("p");
-      para.textContent = "No files currently selected for upload";
-      preview.appendChild(para);
-    } else {
-      fetch('http://127.0.0.1:5000/api/retrieveMarcher',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(curFiles[0])
-        })
-        .then(response => document.write(response.status))
-      }
-    }
-    
+  // Get the selected PDF file
+  const pdfFile = pdfInput.files[0];
+
+  if (!pdfFile) {
+      statusMessage.textContent = "No file selected.";
+      return;
+  }
+
+  // Create a FormData object to send the file
+  const formData = new FormData();
+  formData.append("pdfFile", pdfFile);
+
+  // Send a POST request to your Flask server
+  fetch("http://127.0.0.1:5000/api/retrieveMarcher", {
+      method: "POST",
+      body: formData,
+  })
+  .then(response => {
+      return response.json();
+  }).then((data) => console.log(data))
+    for(let x in data){
+      marcher = JSON.parse(x)
+      marcher_list.append(marcher)
+    };
+  });
+
 
   
-input.addEventListener("change", fetchFromAPI);
