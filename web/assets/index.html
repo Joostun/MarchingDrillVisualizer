@@ -31,17 +31,16 @@ document.getElementById("uploadButton").addEventListener("click", () => {
 
     // Send a POST request to your Flask server
     fetch("http://127.0.0.1:5000/api/retrieveMarcher", {
-        mode: 'no-cors',
         method: "POST",
         body: formData,
     })
     .then(response => {
         console.log(response)
+        statusMessage.textContent = response;
     })
     .then(data => {
         // Handle the response data
         console.log(data);
-        statusMessage.textContent = "good";
     })
     .catch(error => {
         console.error("Fetch error:", error);

@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 from Marcher import Marcher
 from PyPDF2 import PdfReader
+from flask_cors import CORS
 import json
 
 marcher_list= []
 
 marcherAPI = Flask(__name__)
-
+CORS(marcherAPI)
 @marcherAPI.route('/api/retrieveMarcher', methods=['POST'])
 def retrieveMarcher():
     if 'pdfFile' not in request.files:
@@ -38,7 +39,9 @@ def retrieveMarcher():
                 'y': marcher_list[marcher_index].y,
                 }
                 marcher_objects.append(marcher_dict)
-            return json.dumps(marcher_objects,indent = 6)
+
+            
+            return json.dumps(marcher_objects[0])
         except Exception as e:
             return jsonify({'error': 'Error processing PDF file'}), 500
         
