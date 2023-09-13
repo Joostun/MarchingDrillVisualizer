@@ -126,6 +126,10 @@ class Marcher:
         split_list = setRaw.split("ln")
         split_list[1] = 'ln ' + split_list[1]
 
+        # Coordinates measured in Steps
+        # X -> Steps from 50 yd line (Side 2 is [-] and Side 1 is [+])
+        # Y -> Steps behind the front sideline
+
         self.x.append(xCoord(split_list[0]))
         self.y.append(yCoord(split_list[1]))
 
