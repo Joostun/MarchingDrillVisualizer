@@ -1,5 +1,8 @@
 let marcher_list = []
 let setNumber = 0
+const dot = new Image()
+dot.src = "dot.png"
+
 document.getElementById("uploadButton").addEventListener("click", () => {
   const pdfInput = document.getElementById("pdfInput");
   const statusMessage = document.getElementById("statusMessage");
@@ -45,17 +48,36 @@ function adjustCoordinates(){
     }
   }
 }
+function setMarcher(){
+  ctx.clearRect(0, 0, 1080, 480); // clear canvas
+  for(let item of marcher_list) {
+    ctx.beginPath();
+    ctx.lineTo(item.x[set+1],item.y[set+1]);
+    ctx.arc()
+    ctx.drawImage(dot, item.x[set], item.y[set]);
+    ctx.closePath();
+    console.log("it goes!!!")
+  }
+
+
+}
 
 function march(set){
   const c = document.getElementById("canvas");
   var ctx = c.getContext("2d")
-
-  ctx.globalCompositeOperation = "destination-over";
-  ctx.clearRect(0, 0, 1080, 480); // clear canvas
-  for(let item of marcher_list) {
+  let xDiff = item.x[set+1] - item.x[set]
+  let yDiff = item.y[set+1] - item.y[set]
+  let counts = item.counts[set]
+  let xStepSize = xDiff/counts
+  let yStepSize = yDiff/counts
+    requestAnimationFrame(animate);
+    let xDiff = item.x[set+1] - item.x[set]
+    let yDiff = item.y[set+1] - item.y[set]
+    let counts = item.counts[set]
     ctx.beginPath();
-    ctx.lineTo(item.x[set],item.y[set]);
-    ctx.stroke();
+    ctx.lineTo(item.x[set+1],item.y[set+1]);
+    ctx.arc()
+    ctx.drawImage(dot, item.x[set], item.y[set]);
     ctx.closePath();
     console.log("it goes!!!")
   }

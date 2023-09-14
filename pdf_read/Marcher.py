@@ -132,5 +132,3 @@ class Marcher:
 
         self.x.append(xCoord(split_list[0]))
         self.y.append(yCoord(split_list[1]))
-
-        
