@@ -1,7 +1,9 @@
-let marcher_list = []
-let setNumber = 0
-const dot = new Image()
-dot.src = "dot.png"
+let marcher_list = [];
+let setNumber = 0;
+let start, previousTimeStamp;
+const c = document.getElementById("canvas");
+var ctx = c.getContext("2d")
+let set = 0;
 
 document.getElementById("uploadButton").addEventListener("click", () => {
   const pdfInput = document.getElementById("pdfInput");
@@ -29,11 +31,11 @@ document.getElementById("uploadButton").addEventListener("click", () => {
   }).then(data => {
       marcher_list = data
       adjustCoordinates();
-      console.log(marcher_list)
-      console.log(data)});
-      
+      console.log(marcher_list);  
   })
+});
 
+//adjust Coordinates to match the canvas dimensions
 function adjustCoordinates(){
   for(let marcherIndex = 0; marcherIndex<marcher_list.length; marcherIndex++){
     for(let xcoordinateIndex = 0; xcoordinateIndex < marcher_list[marcherIndex].x.length; xcoordinateIndex++){
@@ -48,42 +50,60 @@ function adjustCoordinates(){
     }
   }
 }
-function setMarcher(){
-  ctx.clearRect(0, 0, 1080, 480); // clear canvas
-  for(let item of marcher_list) {
-    ctx.beginPath();
-    ctx.lineTo(item.x[set+1],item.y[set+1]);
-    ctx.arc()
-    ctx.drawImage(dot, item.x[set], item.y[set]);
-    ctx.closePath();
-    console.log("it goes!!!")
+
+let xDiff = [];
+let yDiff = [];
+for(item in marcher_list){
+  let counts = item.counts
+  for(let stepIndex = 0; stepIndex < ( item.counts.length-1); stepIndex++){
+    let xSubDiff = [];
+    let ySubDiff = [];
+    //x step size
+    xSubDiff.push(item.x[set+1] - item.x[set]);
+    //y step size
+    ySubDiff.push(item.y[set+1] - item.y[set]);
+
+    //Add to xDiff and yDiff
+    xDiff.push(xSubDiff);
+    yDiff.push(ysubDiff);
   }
-
-
+}
+  
+function setMarcher(startTime){
+  let setTime = marcher_list[0].counts[set] * 500;
+  if(setTime == 0){
+    setTime = 4000;
+  }
+  let currentTime = new Date.now();
+  let elapsedTime = currentTime - startTime;
+  console.log(elapsedTime);
+  console.log(startTime);
+  let timeFrac = elapsedTime / setTime;
+  console.log(timeFrac)
+  if(elapsedTime > setTime){
+    timeFrac = 1;
+  }
+  ctx.clearRect(0, 0, 1080, 480); // clear canvas
+  for(let marcherListIndex = 0; marcherListIndex < marcher_list.length; marcherListIndex++) {
+      let item = marcher_list[marcherListIndex]
+      ctx.beginPath();
+      let xStepped = xDiff[marcherListIndex][set] * timeFrac;
+      let yStepped = yDiff[marcherListIndex][set] * timeFrac;
+      ctx.arc(item.x[set] + xStepped, item.y[set] + yStepped, 5, 2*Math.PI, false);
+      ctx.fillstyle = "blue";
+      ctx.fill();
+      ctx.closePath();
+  }
 }
 
-function march(set){
-  const c = document.getElementById("canvas");
-  var ctx = c.getContext("2d")
-  let xDiff = item.x[set+1] - item.x[set]
-  let yDiff = item.y[set+1] - item.y[set]
-  let counts = item.counts[set]
-  let xStepSize = xDiff/counts
-  let yStepSize = yDiff/counts
-    requestAnimationFrame(animate);
-    let xDiff = item.x[set+1] - item.x[set]
-    let yDiff = item.y[set+1] - item.y[set]
-    let counts = item.counts[set]
-    ctx.beginPath();
-    ctx.lineTo(item.x[set+1],item.y[set+1]);
-    ctx.arc()
-    ctx.drawImage(dot, item.x[set], item.y[set]);
-    ctx.closePath();
-    console.log("it goes!!!")
-  }
-  setNumber++
+function myRepeatFunction(event) {
+  this.innerHTML = "Elapsed time: " + event.elapsedTime;
 }
 
 document.getElementById("initializeMarching").addEventListener("click", () => {
-  setInterval(march(setNumber),5000);
+  const startTime = new Date();
+  console.log(startTime);
+  console.log(event.elapsedTime);
+  window.requestAnimationFrame(setMarcher(startTime));
+  set++ 
 });
