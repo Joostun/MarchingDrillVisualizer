@@ -27,7 +27,6 @@ def retrieveMarcher():
                 raw_text = raw_text + pdfPage.extract_text()
 
             sheets = raw_text.split("Printed:")[:-1]
-
             marcher_objects = []
 
             for sheet in sheets:

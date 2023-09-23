@@ -4,6 +4,8 @@ let start, previousTimeStamp;
 const c = document.getElementById("canvas");
 var ctx = c.getContext("2d")
 let set = 0;
+let xDiff = [];
+let yDiff = [];
 
 document.getElementById("uploadButton").addEventListener("click", () => {
   const pdfInput = document.getElementById("pdfInput");
@@ -22,7 +24,7 @@ document.getElementById("uploadButton").addEventListener("click", () => {
   formData.append("pdfFile", pdfFile);
 
   // Send a POST request to your Flask server
-  fetch("http://127.0.0.1:5000/api/retrieveMarcher", {
+  fetch("http://127.0.0.1:5000/api/retrieveMarcher?" + Math.random(), {
       method: "POST",
       body: formData,
   })
@@ -31,6 +33,7 @@ document.getElementById("uploadButton").addEventListener("click", () => {
   }).then(data => {
       marcher_list = data
       adjustCoordinates();
+      stepCalc();
       console.log(marcher_list);  
   })
 });
@@ -51,38 +54,38 @@ function adjustCoordinates(){
   }
 }
 
-let xDiff = [];
-let yDiff = [];
-for(item in marcher_list){
-  let counts = item.counts
-  for(let stepIndex = 0; stepIndex < ( item.counts.length-1); stepIndex++){
+function stepCalc(){
+  xDiff = [];
+  yDiff = [];
+  for(let i = 0; i < marcher_list.length; i++){
+    item = marcher_list[i];
+    let counts = item.counts;
     let xSubDiff = [];
     let ySubDiff = [];
-    //x step size
-    xSubDiff.push(item.x[set+1] - item.x[set]);
-    //y step size
-    ySubDiff.push(item.y[set+1] - item.y[set]);
-
-    //Add to xDiff and yDiff
+    for(let stepIndex = 0; stepIndex < (counts.length-1); stepIndex++){
+      //x step size
+      xSubDiff.push(item.x[stepIndex+1] - item.x[stepIndex]);
+      //y step size
+      ySubDiff.push(item.y[stepIndex+1] - item.y[stepIndex]);
+      //Add to xDiff and yDiff
+    }
+    console.log(xSubDiff)
     xDiff.push(xSubDiff);
-    yDiff.push(ysubDiff);
+    yDiff.push(ySubDiff);
   }
-}
-  
+}  
+
 function setMarcher(startTime){
-  let setTime = marcher_list[0].counts[set] * 500;
+  let setTime = marcher_list[0].counts[set] * 200;
   if(setTime == 0){
-    setTime = 4000;
+    setTime = 2000;
   }
-  let currentTime = new Date.now();
+  let currentTime = Date.now();
   let elapsedTime = currentTime - startTime;
-  console.log(elapsedTime);
-  console.log(startTime);
   let timeFrac = elapsedTime / setTime;
-  console.log(timeFrac)
-  if(elapsedTime > setTime){
+  if(elapsedTime > setTime){  
     timeFrac = 1;
-  }
+  } 
   ctx.clearRect(0, 0, 1080, 480); // clear canvas
   for(let marcherListIndex = 0; marcherListIndex < marcher_list.length; marcherListIndex++) {
       let item = marcher_list[marcherListIndex]
@@ -94,6 +97,10 @@ function setMarcher(startTime){
       ctx.fill();
       ctx.closePath();
   }
+  if(timeFrac >= 1){
+    clearInterval(marchInterval);
+    console.log("its done ");
+  } 
 }
 
 function myRepeatFunction(event) {
@@ -101,9 +108,8 @@ function myRepeatFunction(event) {
 }
 
 document.getElementById("initializeMarching").addEventListener("click", () => {
-  const startTime = new Date();
+  const startTime = Date.now();
   console.log(startTime);
-  console.log(event.elapsedTime);
-  window.requestAnimationFrame(setMarcher(startTime));
-  set++ 
+  marchInterval = setInterval(() => setMarcher(startTime), 10); // Pass a function reference
+  set++;
 });
