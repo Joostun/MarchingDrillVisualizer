@@ -21,11 +21,11 @@ def retrieveMarcher():
     if pdf_file:
         try:
             # Read the uploaded PDF file
+
             pdf_reader = PdfReader(pdf_file)
             raw_text = ""
             for pdfPage in pdf_reader.pages:
                 raw_text = raw_text + pdfPage.extract_text()
-
             sheets = raw_text.split("Printed:")[:-1]
             marcher_objects = []
 
@@ -39,8 +39,7 @@ def retrieveMarcher():
                 'y': marcher_list[marcher_index].y,
                 }
                 marcher_objects.append(marcher_dict)
-
-            
+            marcher_list.clear()
             return json.dumps(marcher_objects)
         except Exception as e:
             return jsonify({'error': 'Error processing PDF file'}), 500
